@@ -44,7 +44,8 @@ public class SQLiteDatabase {
 	 * @throws SQLiteException
 	 */
 	public SQLiteDatabase(String fileName) throws SQLiteException {
-		System.loadLibrary("tmessages.34");
+
+		System.loadLibrary("sqlite");
 		sqliteHandle = opendb(fileName, ApplicationLoader.getFilesDirFixed().getPath());
 		isOpen = true;
 	}
