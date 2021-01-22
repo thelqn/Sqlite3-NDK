@@ -2,7 +2,7 @@
 
 It's a app that implements a small, fast, self-contained, high-reliability, full-featured, SQLite database engine for android.
 
-This is injected from [Telegram Project](https://github.com/DrKLO/Telegram)
+This is extracted from [Telegram Project](https://github.com/DrKLO/Telegram)
 
 fast and easy to use sqlite database with full functionality on sqlite querys.
 let me know if you find any issues
