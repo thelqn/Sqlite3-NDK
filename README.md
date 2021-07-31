@@ -7,7 +7,10 @@ This is extracted from [Telegram Project](https://github.com/DrKLO/Telegram)
 fast and easy to use sqlite database with full functionality on sqlite querys.
 let me know if you find any issues
 
-![Sqlite3-NDK](https://github.com/thelqn/Sqlite3-NDK/blob/main/ScreenShot/Screenshot_Sqlite3-NDK.jpg)
+for using library add aar file in the apk folder in your lib folder and its done.
+you can use it like it's on this app.
+
+![Sqlite3-NDK](https://github.com/thelqn/Sqlite3-NDK/blob/master/ScreenShot/Screenshot_Sqlite3-NDK.jpg)
 
 ### Compilation Guide
 
