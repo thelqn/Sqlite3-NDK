@@ -31,9 +31,9 @@ public class NativeByteBuffer extends AbstractSerializedData {
             }
             result.address = address;
             result.reused = false;
-            result.buffer = native_getJavaByteBuffer(address);
-            result.buffer.limit(native_limit(address));
-            int position = native_position(address);
+            result.buffer = getJavaByteBuffer(address);
+            result.buffer.limit(limit(address));
+            int position = position(address);
             if (position <= result.buffer.limit()) {
                 result.buffer.position(position);
             }
@@ -48,9 +48,9 @@ public class NativeByteBuffer extends AbstractSerializedData {
 
     public NativeByteBuffer(int size) throws Exception {
         if (size >= 0) {
-            address = native_getFreeBuffer(size);
+            address = getFreeBuffer(size);
             if (address != 0) {
-                buffer = native_getJavaByteBuffer(address);
+                buffer = getJavaByteBuffer(address);
                 buffer.position(0);
                 buffer.limit(size);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -569,7 +569,7 @@ public class NativeByteBuffer extends AbstractSerializedData {
     public void reuse() {
         if (address != 0) {
             reused = true;
-            native_reuse(address);
+            reuse(address);
         }
     }
 
@@ -578,9 +578,9 @@ public class NativeByteBuffer extends AbstractSerializedData {
         return buffer.remaining();
     }
 
-    public static native long native_getFreeBuffer(int length);
-    public static native ByteBuffer native_getJavaByteBuffer(long address);
-    public static native int native_limit(long address);
-    public static native int native_position(long address);
-    public static native void native_reuse(long address);
+    public static native long getFreeBuffer(int length);
+    public static native ByteBuffer getJavaByteBuffer(long address);
+    public static native int limit(long address);
+    public static native int position(long address);
+    public static native void reuse(long address);
 }

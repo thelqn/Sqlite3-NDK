@@ -39,7 +39,7 @@ void FileLog::e(const char *message, ...) {
     time_t t = time(0);
     struct tm *now = localtime(&t);
 #ifdef ANDROID
-    __android_log_vprint(ANDROID_LOG_ERROR, "tgnet", message, argptr);
+    __android_log_vprint(ANDROID_LOG_ERROR, "sqlite3", message, argptr);
     va_end(argptr);
     va_start(argptr, message);
 #else
@@ -70,7 +70,7 @@ void FileLog::w(const char *message, ...) {
     time_t t = time(0);
     struct tm *now = localtime(&t);
 #ifdef ANDROID
-    __android_log_vprint(ANDROID_LOG_WARN, "tgnet", message, argptr);
+    __android_log_vprint(ANDROID_LOG_WARN, "sqlite3", message, argptr);
     va_end(argptr);
     va_start(argptr, message);
 #else
@@ -101,7 +101,7 @@ void FileLog::d(const char *message, ...) {
     time_t t = time(0);
     struct tm *now = localtime(&t);
 #ifdef ANDROID
-    __android_log_vprint(ANDROID_LOG_DEBUG, "tgnet", message, argptr);
+    __android_log_vprint(ANDROID_LOG_DEBUG, "sqlite3", message, argptr);
     va_end(argptr);
     va_start(argptr, message);
 #else

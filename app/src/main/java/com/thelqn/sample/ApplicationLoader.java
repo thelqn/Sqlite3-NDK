@@ -1,11 +1,3 @@
-/*
- * This is the source code of Telegram for Android v. 5.x.x.
- * It is licensed under GNU GPL v. 2 or later.
- * You should have received a copy of the license in this archive (see LICENSE).
- *
- * Copyright Nikolai Kudashov, 2013-2018.
- */
-
 package com.thelqn.sample;
 
 import android.annotation.SuppressLint;
@@ -14,6 +6,9 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.util.Log;
+
+import com.thelqn.sqlite3.NativeLoader;
+import com.thelqn.sqlite3.SQLiteDatabase;
 
 import java.io.File;
 
@@ -54,5 +49,7 @@ public class ApplicationLoader extends Application {
             applicationContext = getApplicationContext();
         }
         applicationHandler = new Handler(applicationContext.getMainLooper());
+
+        NativeLoader.initNativeLibs(ApplicationLoader.applicationContext);
     }
 }

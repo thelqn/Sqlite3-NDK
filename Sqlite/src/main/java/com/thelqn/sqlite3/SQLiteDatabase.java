@@ -8,12 +8,12 @@
 
 package com.thelqn.sqlite3;
 
-
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
 import java.io.File;
+import java.util.Locale;
 
 public class SQLiteDatabase {
 
@@ -27,26 +27,12 @@ public class SQLiteDatabase {
     }
 
     /**
-     * Database constructor for default location "/data/data/PackageName/files" dir
-     * @param context  Application context
      * @param fileName Database file name
+     * @param tempDir  Database file directory
      * @throws SQLiteException
      */
-    public SQLiteDatabase(Context context, String fileName) throws SQLiteException {
-        System.loadLibrary("tmessages.34");
-        sqliteHandle = opendb(fileName, getFilesDirFixed(context).getPath());
-        isOpen = true;
-    }
-
-    /**
-     * Database constructor for custom directory
-     * @param fileName Database file name
-     * @throws SQLiteException
-     */
-    // TODO : test app
-    public SQLiteDatabase(String fileName, String filePath) throws SQLiteException {
-        System.loadLibrary("sqlite");
-        sqliteHandle = opendb(fileName, filePath);
+    public SQLiteDatabase(String fileName, String tempDir) throws SQLiteException {
+        sqliteHandle = opendb(fileName, tempDir);
         isOpen = true;
     }
 
@@ -133,22 +119,29 @@ public class SQLiteDatabase {
         commitTransaction(sqliteHandle);
     }
 
-    private static File getFilesDirFixed(Context context) {
+
+    public static File getFilesDirFixed(Context applicationContext) {
+
+        Log.e("Path = ", applicationContext.getFilesDir().getPath());
+
+        if (applicationContext.getApplicationContext() != null)
+            applicationContext = applicationContext.getApplicationContext();
+
         for (int a = 0; a < 10; a++) {
-            File path = context.getApplicationContext().getFilesDir();
+            File path = applicationContext.getFilesDir();
             if (path != null) {
                 return path;
             }
         }
         try {
-            ApplicationInfo info = context.getApplicationContext().getApplicationInfo();
+            ApplicationInfo info = applicationContext.getApplicationInfo();
             File path = new File(info.dataDir, "files");
             path.mkdirs();
             return path;
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
+            Log.e("Error files dir fixed", e.getMessage());
         }
-        return new File(String.format("/data/data/%s/files", context.getApplicationContext().getPackageName()));
+        return new File(String.format(Locale.US, "/data/data/%s/files", applicationContext.getPackageName()));
     }
 
     native long opendb(String fileName, String tempDir) throws SQLiteException;
@@ -158,4 +151,6 @@ public class SQLiteDatabase {
     native void beginTransaction(long sqliteHandle);
 
     native void commitTransaction(long sqliteHandle);
+
+    public static native void setJava(boolean useJavaByteBuffers);
 }

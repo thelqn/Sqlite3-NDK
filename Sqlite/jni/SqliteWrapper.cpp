@@ -6,6 +6,7 @@
 #include "BuffersStorage.h"
 
 #define APPNAMEFORLOG "MyApp"
+JavaVM *java;
 
 void throw_sqlite3_exception(JNIEnv *env, sqlite3 *handle, int errcode) {
     const char *errmsg = sqlite3_errmsg(handle);
@@ -14,6 +15,49 @@ void throw_sqlite3_exception(JNIEnv *env, sqlite3 *handle, int errcode) {
 }
 
 extern "C" {
+
+jint registerOnJNILoad(JavaVM *vm, JNIEnv *env) {
+    java = vm;
+    NativeByteBuffer::useJavaVM(java, false);
+    return JNI_TRUE;
+}
+
+JNIEXPORT void
+Java_com_thelqn_sqlite3_SQLiteDatabase_setJava(JNIEnv *env, jclass c, jboolean useJavaByteBuffers) {
+    NativeByteBuffer::useJavaVM(java, useJavaByteBuffers);
+}
+
+JNIEXPORT jlong
+Java_com_thelqn_sqlite3_NativeByteBuffer_getFreeBuffer(JNIEnv *env, jclass c, jint length) {
+    return (jlong) (intptr_t) BuffersStorage::getInstance().getFreeBuffer((uint32_t) length);
+}
+
+JNIEXPORT jint
+Java_com_thelqn_sqlite3_NativeByteBuffer_limit(JNIEnv *env, jclass c, jlong address) {
+    NativeByteBuffer *buffer = (NativeByteBuffer *) (intptr_t) address;
+    return buffer->limit();
+}
+
+JNIEXPORT jint
+Java_com_thelqn_sqlite3_NativeByteBuffer_position(JNIEnv *env, jclass c, jlong address) {
+    NativeByteBuffer *buffer = (NativeByteBuffer *) (intptr_t) address;
+    return buffer->position();
+}
+
+JNIEXPORT void
+Java_com_thelqn_sqlite3_NativeByteBuffer_reuse(JNIEnv *env, jclass c, jlong address) {
+    NativeByteBuffer *buffer = (NativeByteBuffer *) (intptr_t) address;
+    buffer->reuse();
+}
+
+JNIEXPORT jobject
+Java_com_thelqn_sqlite3_NativeByteBuffer_getJavaByteBuffer(JNIEnv *env, jclass c, jlong address) {
+    NativeByteBuffer *buffer = (NativeByteBuffer *) (intptr_t) address;
+    if (buffer == nullptr) {
+        return nullptr;
+    }
+    return buffer->getJavaByteBuffer();
+}
 
 JNIEXPORT jint Java_com_thelqn_sqlite3_SQLitePreparedStatement_step(JNIEnv *env, jobject object,
                                                                     jlong statementHandle) {
@@ -167,7 +211,8 @@ JNIEXPORT void Java_com_thelqn_sqlite3_SQLiteDatabase_commitTransaction(JNIEnv *
     sqlite3_exec(handle, "COMMIT", 0, 0, 0);
 }
 
-JNIEXPORT jlong Java_com_thelqn_sqlite3_SQLiteDatabase_opendb(JNIEnv *env, jobject object, jstring fileName,
+JNIEXPORT jlong
+Java_com_thelqn_sqlite3_SQLiteDatabase_opendb(JNIEnv *env, jobject object, jstring fileName,
                                               jstring tempDir) {
     char const *fileNameStr = env->GetStringUTFChars(fileName, 0);
     char const *tempDirStr = env->GetStringUTFChars(tempDir, 0);

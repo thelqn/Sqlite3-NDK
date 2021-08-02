@@ -1,5 +1,7 @@
 package com.thelqn.sample;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<>());
 
         // To care storage instance
-        storage = MessagesStorage.getInstance(0);
+        storage = MessagesStorage.getInstance();
 
         initUi();
         loadMessages();
@@ -48,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
             storage.insertMessage(new Message(UUID.randomUUID().toString(), input.getText().toString()));
             loadMessages();
             input.setText("");
+
+
+            Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.redheart);
+
+            storage.putWallpapers(icon);
         });
     }
 

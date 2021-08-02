@@ -1,11 +1,3 @@
-/*
- * This is the source code of tgnet library v. 1.1
- * It is licensed under GNU GPL v. 2 or later.
- * You should have received a copy of the license in this archive (see LICENSE).
- *
- * Copyright Nikolai Kudashov, 2015-2018.
- */
-
 #ifndef NATIVEBYTEBUFFER_H
 #define NATIVEBYTEBUFFER_H
 
@@ -14,6 +6,10 @@
 
 #ifdef ANDROID
 #include <jni.h>
+
+extern JavaVM *javaVm;
+extern jclass jclass_ByteBuffer;
+extern jmethodID jclass_ByteBuffer_allocateDirect;
 #endif
 
 class ByteArray;
@@ -87,6 +83,7 @@ public:
     void reuse();
 #ifdef ANDROID
     jobject getJavaByteBuffer();
+    static void useJavaVM(JavaVM *vm, bool useJavaByteBuffers);
 #endif
 
 private:

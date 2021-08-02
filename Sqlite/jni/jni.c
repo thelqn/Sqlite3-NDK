@@ -8,11 +8,17 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+int registerOnJNILoad(JavaVM *vm, JNIEnv *env);
+
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     JNIEnv *env = 0;
     srand(time(NULL));
 
     if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
+
+    if (registerOnJNILoad(vm, env) != JNI_TRUE) {
         return -1;
     }
 
