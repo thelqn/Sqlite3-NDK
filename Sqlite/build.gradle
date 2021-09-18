@@ -8,7 +8,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 29
     buildToolsVersion '30.0.3'
     ndkVersion "22.1.7171670"
 
@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -54,8 +54,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
