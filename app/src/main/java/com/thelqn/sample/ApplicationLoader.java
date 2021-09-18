@@ -51,5 +51,6 @@ public class ApplicationLoader extends Application {
         applicationHandler = new Handler(applicationContext.getMainLooper());
 
         NativeLoader.initNativeLibs(ApplicationLoader.applicationContext);
+        MessagesStorage.getInstance();
     }
 }

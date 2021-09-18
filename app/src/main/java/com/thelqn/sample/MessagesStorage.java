@@ -311,6 +311,7 @@ public class MessagesStorage {
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
             } finally {
+                Log.e("Timer", "Data is loaded... " + System.currentTimeMillis());
                 processMessageInfo(messages, listener);
             }
         });

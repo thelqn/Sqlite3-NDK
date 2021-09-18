@@ -1,21 +1,23 @@
 package com.thelqn.sample;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.thelqn.sample.model.Message;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     MessagesStorage storage;
     ArrayAdapter<String> adapter;
@@ -60,13 +62,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMessages() {
+        Log.e("Timer", "Data is loading... " + System.currentTimeMillis());
         storage.loadMessagesData(messages -> {
             adapter.clear();
             for (int i = 0; i < messages.size(); i++)
                 adapter.add(messages.get(i).getMessage());
 
             adapter.notifyDataSetChanged();
+            Log.e("Timer", "Data is showing... " + System.currentTimeMillis());
         });
     }
-
 }
